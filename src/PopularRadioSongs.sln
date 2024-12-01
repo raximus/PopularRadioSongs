@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35431.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PopularRadioSongs.Mvc", "PopularRadioSongs.Mvc\PopularRadioSongs.Mvc.csproj", "{8CD9D63F-20D4-4D4E-A8D6-609714FEA4B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopularRadioSongs.Core", "PopularRadioSongs.Core\PopularRadioSongs.Core.csproj", "{09D86FEA-8494-4639-9A1A-2C177DF59D08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopularRadioSongs.Application", "PopularRadioSongs.Application\PopularRadioSongs.Application.csproj", "{A83A611D-7AEF-4AC7-A491-B6B5F4C45909}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopularRadioSongs.Infrastructure", "PopularRadioSongs.Infrastructure\PopularRadioSongs.Infrastructure.csproj", "{3C36F683-6A97-4AC2-978B-EB9CD4615BB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopularRadioSongs.Persistence", "PopularRadioSongs.Persistence\PopularRadioSongs.Persistence.csproj", "{6B78C681-5759-4CE8-B568-5ABC67A9B303}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CD9D63F-20D4-4D4E-A8D6-609714FEA4B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CD9D63F-20D4-4D4E-A8D6-609714FEA4B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CD9D63F-20D4-4D4E-A8D6-609714FEA4B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CD9D63F-20D4-4D4E-A8D6-609714FEA4B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D86FEA-8494-4639-9A1A-2C177DF59D08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D86FEA-8494-4639-9A1A-2C177DF59D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D86FEA-8494-4639-9A1A-2C177DF59D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D86FEA-8494-4639-9A1A-2C177DF59D08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A83A611D-7AEF-4AC7-A491-B6B5F4C45909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A83A611D-7AEF-4AC7-A491-B6B5F4C45909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A83A611D-7AEF-4AC7-A491-B6B5F4C45909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A83A611D-7AEF-4AC7-A491-B6B5F4C45909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C36F683-6A97-4AC2-978B-EB9CD4615BB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C36F683-6A97-4AC2-978B-EB9CD4615BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C36F683-6A97-4AC2-978B-EB9CD4615BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C36F683-6A97-4AC2-978B-EB9CD4615BB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B78C681-5759-4CE8-B568-5ABC67A9B303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B78C681-5759-4CE8-B568-5ABC67A9B303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B78C681-5759-4CE8-B568-5ABC67A9B303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B78C681-5759-4CE8-B568-5ABC67A9B303}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E7F1CDB-DE8E-4CEC-8BFD-69B6BEC46EDE}
+	EndGlobalSection
+EndGlobal
