@@ -7,7 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PopularRadioSongs.Application\PopularRadioSongs.Application.csproj" />
+    <ProjectReference Include="..\PopularRadioSongs.Infrastructure\PopularRadioSongs.Infrastructure.csproj" />
+    <ProjectReference Include="..\PopularRadioSongs.Persistence\PopularRadioSongs.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
