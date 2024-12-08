@@ -34,7 +34,7 @@ namespace PopularRadioSongs.Persistence.Migrations
 
                     b.HasIndex("SongsId");
 
-                    b.ToTable("ArtistSong");
+                    b.ToTable("ArtistSong", (string)null);
                 });
 
             modelBuilder.Entity("PopularRadioSongs.Core.Entities.Artist", b =>
@@ -55,7 +55,7 @@ namespace PopularRadioSongs.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
                 });
 
             modelBuilder.Entity("PopularRadioSongs.Core.Entities.Playback", b =>
@@ -79,7 +79,7 @@ namespace PopularRadioSongs.Persistence.Migrations
 
                     b.HasIndex("SongId");
 
-                    b.ToTable("Playbacks");
+                    b.ToTable("Playbacks", (string)null);
                 });
 
             modelBuilder.Entity("PopularRadioSongs.Core.Entities.Song", b =>
@@ -100,7 +100,7 @@ namespace PopularRadioSongs.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Songs");
+                    b.ToTable("Songs", (string)null);
                 });
 
             modelBuilder.Entity("ArtistSong", b =>
