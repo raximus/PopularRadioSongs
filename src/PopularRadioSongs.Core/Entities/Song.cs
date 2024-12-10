@@ -1,4 +1,6 @@
-﻿namespace PopularRadioSongs.Core.Entities
+﻿using PopularRadioSongs.Core.Common;
+
+namespace PopularRadioSongs.Core.Entities
 {
     public class Song
     {
@@ -14,8 +16,8 @@
 
         public Song(string title, List<Artist>? artists = null)
         {
-            Title = title;
-            Lookup = title.ToLower();
+            Title = StringsHelper.StandardizeString(title);
+            Lookup = StringsHelper.LookupString(Title);
             if (artists != null)
             {
                 _artists = artists;

@@ -1,4 +1,6 @@
-﻿namespace PopularRadioSongs.Core.Entities
+﻿using PopularRadioSongs.Core.Common;
+
+namespace PopularRadioSongs.Core.Entities
 {
     public class Artist
     {
@@ -11,8 +13,8 @@
 
         public Artist(string name)
         {
-            Name = name;
-            Lookup = name.ToLower();
+            Name = StringsHelper.StandardizeString(name);
+            Lookup = StringsHelper.LookupString(Name);
         }
         private Artist() { }
 
