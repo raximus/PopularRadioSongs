@@ -1,12 +1,22 @@
 ﻿using MediatR;
+using PopularRadioSongs.Application.Contracts;
 
 namespace PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountList
 {
     public class GetArtistsSongsCountListQueryHandler : IRequestHandler<GetArtistsSongsCountListQuery, List<ArtistSongsCountListDto>>
     {
+        private readonly IArtistRepository _artistRepository;
+
+        public GetArtistsSongsCountListQueryHandler(IArtistRepository artistRepository)
+        {
+            _artistRepository = artistRepository;
+        }
+
         public async Task<List<ArtistSongsCountListDto>> Handle(GetArtistsSongsCountListQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var artists = await _artistRepository.GetArtistsBySongsCountAsync();
+
+            return artists;
         }
     }
 }

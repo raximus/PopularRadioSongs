@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PopularRadioSongs.Application.Contracts;
+using PopularRadioSongs.Persistence.Repositories;
 
 namespace PopularRadioSongs.Persistence
 {
@@ -10,6 +12,8 @@ namespace PopularRadioSongs.Persistence
         {
             services.AddDbContext<PopularRadioSongsDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("PopularRadioSongsConnection")));
+
+            services.AddScoped<IArtistRepository, ArtistRepository>();
 
             return services;
         }
