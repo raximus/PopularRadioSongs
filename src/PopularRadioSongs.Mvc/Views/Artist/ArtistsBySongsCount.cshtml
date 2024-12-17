@@ -1,0 +1,23 @@
+﻿@model IEnumerable<PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountList.ArtistSongsCountListDto>
+
+@{
+    ViewData["Title"] = "Artists by Songs Count";
+}
+
+<h1>Artists by Songs Count</h1>
+
+<table class="table">
+    <tbody>
+        @foreach (var artist in Model)
+        {
+            <tr>
+                <td>
+                    @artist.SongsCount
+                </td>
+                <td>
+                    <a asp-controller="Artist" asp-action="Index" asp-route-id="@artist.Id">@artist.Name</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

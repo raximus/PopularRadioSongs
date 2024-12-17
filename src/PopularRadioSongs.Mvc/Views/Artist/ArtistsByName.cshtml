@@ -1,0 +1,20 @@
+﻿@model IEnumerable<PopularRadioSongs.Application.UseCases.Artists.GetArtistsList.ArtistListDto>
+
+@{
+    ViewData["Title"] = "Artists by Name";
+}
+
+<h1>Artists by Name</h1>
+
+<table class="table">
+    <tbody>
+        @foreach (var artist in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Artist" asp-action="Index" asp-route-id="@artist.Id">@artist.Name</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

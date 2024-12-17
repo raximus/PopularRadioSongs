@@ -1,0 +1,41 @@
+﻿@model PopularRadioSongs.Application.UseCases.Artists.GetArtistDetails.ArtistDetailsDto
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>Artist @Model.Name</h1>
+
+<div>
+    <h4>Songs</h4>
+
+    <table class="table">
+        <tbody>
+            @foreach (var song in Model.Songs)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="Song" asp-action="Index" asp-route-id="@song.Id">@song.Title</a> -
+                        @for (int i = 0; i < song.Artists.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                <text> | </text>
+                            }
+
+                            var artist = song.Artists[i];
+                            if (artist.Id == Model.Id)
+                            {
+                                @artist.Name
+                            }
+                            else
+                            {
+                                <a asp-controller="Artist" asp-action="Index" asp-route-id="@artist.Id">@artist.Name</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

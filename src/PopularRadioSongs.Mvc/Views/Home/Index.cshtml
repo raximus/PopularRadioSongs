@@ -3,6 +3,10 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome in Popular Radio Songs!</h1>
+
+    <p>
+        <a class="btn btn-outline-primary" asp-controller="Artist" asp-action="ArtistsByName">Artists by Name</a>
+        <a class="btn btn-outline-primary" asp-controller="Artist" asp-action="ArtistsBySongsCount">Artists by Songs Count</a>
+    </p>
 </div>
