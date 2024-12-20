@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PopularRadioSongs.Application.UseCases.Songs.GetSongsTitleCountList.SongTitleCountListDto>
+
+@{
+    ViewData["Title"] = "Songs by Title Count";
+}
+
+<h1>Songs by Title Count</h1>
+
+<table class="table">
+    <tbody>
+        @foreach (var songsGroup in Model)
+        {
+            <tr>
+                <td>
+                    @songsGroup.SongsCount
+                </td>
+                <td>
+                    @songsGroup.Title
+                </td>
+                <td>
+                </td>
+            </tr>
+            @foreach (var song in songsGroup.Songs)
+            {
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <a asp-controller="Song" asp-action="Index" asp-route-id="@song.Id">@song.Title</a> -
+                        @for (int i = 0; i < song.Artists.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                <text> | </text>
+                            }
+
+                            var artist = song.Artists[i];
+                            <a asp-controller="Artist" asp-action="Index" asp-route-id="@artist.Id">@artist.Name</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

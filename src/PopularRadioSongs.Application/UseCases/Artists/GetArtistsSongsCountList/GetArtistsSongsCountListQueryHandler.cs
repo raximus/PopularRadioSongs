@@ -14,7 +14,7 @@ namespace PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountLis
 
         public async Task<List<ArtistSongsCountListDto>> Handle(GetArtistsSongsCountListQuery request, CancellationToken cancellationToken)
         {
-            var artists = await _artistRepository.GetArtistsBySongsCountAsync();
+            var artists = await _artistRepository.GetArtistSongsCountListAsync();
 
             return artists;
         }

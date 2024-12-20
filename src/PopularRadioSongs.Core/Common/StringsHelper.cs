@@ -22,7 +22,6 @@ namespace PopularRadioSongs.Core.Common
                 { "í", "i" },
                 { "ú", "u" },
                 { "ñ", "n" },
-                { "ü", "u" },
 
                 { "à", "a" },
                 { "è", "e" },

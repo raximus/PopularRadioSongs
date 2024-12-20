@@ -6,7 +6,7 @@ namespace PopularRadioSongs.Application.Contracts
     public interface IArtistRepository
     {
         Task<List<Artist>> GetArtistsAsync();
-        Task<List<ArtistSongsCountListDto>> GetArtistsBySongsCountAsync();
+        Task<List<ArtistSongsCountListDto>> GetArtistSongsCountListAsync();
         Task<Artist?> GetArtistWithSongsByIdAsync(int artistId);
     }
 }

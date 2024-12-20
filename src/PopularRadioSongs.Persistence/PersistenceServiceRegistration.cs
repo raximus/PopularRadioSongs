@@ -14,6 +14,7 @@ namespace PopularRadioSongs.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("PopularRadioSongsConnection")));
 
             services.AddScoped<IArtistRepository, ArtistRepository>();
+            services.AddScoped<ISongRepository, SongRepository>();
 
             return services;
         }

@@ -1,0 +1,24 @@
+﻿@model PopularRadioSongs.Application.UseCases.Songs.GetSongDetails.SongDetailsDto
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>Song @Model.Title</h1>
+
+<div>
+    <h4>Artists</h4>
+
+    <table class="table">
+        <tbody>
+            @foreach (var artist in Model.Artists)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="Artist" asp-action="Index" asp-route-id="@artist.Id">@artist.Name</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
