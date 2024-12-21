@@ -21,8 +21,8 @@ namespace PopularRadioSongs.Persistence.Repositories
 
         public async Task<List<ArtistSongsCountListDto>> GetArtistSongsCountListAsync()
         {
-            return await _dbContext.Artists.Select(a => new { a.Id, a.Name, SongsCount = a.Songs.Count }).Where(a => a.SongsCount > 1).OrderByDescending(a => a.SongsCount)
-                .Select(a => new ArtistSongsCountListDto(a.Id, a.Name, a.SongsCount)).ToListAsync();
+            return await _dbContext.Artists.Where(a => a.Songs.Count > 1).OrderByDescending(a => a.Songs.Count)
+                .Select(a => new ArtistSongsCountListDto(a.Id, a.Name, a.Songs.Count)).ToListAsync();
         }
 
         public async Task<Artist?> GetArtistWithSongsByIdAsync(int artistId)
