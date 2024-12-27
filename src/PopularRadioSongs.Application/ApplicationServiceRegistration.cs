@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PopularRadioSongs.Application.Contracts;
+using PopularRadioSongs.Application.Services;
 using System.Reflection;
 
 namespace PopularRadioSongs.Application
@@ -9,6 +11,8 @@ namespace PopularRadioSongs.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+            services.AddTransient<IPlaybacksImporterService, PlaybacksImporterService>();
 
             return services;
         }
