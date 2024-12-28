@@ -7,16 +7,27 @@ namespace PopularRadioSongs.Application.Services
     {
         private readonly ILogger<PlaybacksImporterService> _logger;
         private readonly ISongRepository _songRepository;
+        private readonly IEnumerable<IRadioStation> _radioStations;
 
-        public PlaybacksImporterService(ILogger<PlaybacksImporterService> logger, ISongRepository songRepository)
+        public PlaybacksImporterService(ILogger<PlaybacksImporterService> logger, ISongRepository songRepository, IEnumerable<IRadioStation> radioStations)
         {
             _logger = logger;
             _songRepository = songRepository;
+            _radioStations = radioStations;
         }
 
-        public void ImportPlaybacks()
+        public async Task ImportPlaybacksAsync()
         {
             _logger.LogInformation("Importing Playbacks");
+
+            var playbacksTime = new DateTimeOffset(2024, 12, 28, 13, 0, 0, TimeSpan.FromHours(1));
+
+            foreach (var radioStation in _radioStations)
+            {
+                var playbacks = await radioStation.GetPlaybacksAsync(playbacksTime);
+
+                _logger.LogInformation("Pobrano {0} odtworzeń dla Radia {1}(Id {2})", playbacks.Count, radioStation.Name, radioStation.Id);
+            }
         }
     }
 }
