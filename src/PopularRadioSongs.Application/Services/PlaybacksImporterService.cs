@@ -16,9 +16,9 @@ namespace PopularRadioSongs.Application.Services
             _radioStations = radioStations;
         }
 
-        public async Task ImportPlaybacksAsync()
+        public async Task ImportPlaybacksAsync(int hoursRange)
         {
-            _logger.LogInformation("Importing Playbacks");
+            _logger.LogInformation("Importing Playbacks for {0} hours", hoursRange);
 
             var playbacksTime = new DateTimeOffset(2024, 12, 28, 13, 0, 0, TimeSpan.FromHours(1));
 

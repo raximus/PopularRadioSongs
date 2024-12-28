@@ -6,6 +6,11 @@
     <h1 class="display-4">Welcome in Popular Radio Songs!</h1>
 
     <p>
+        <a class="btn btn-outline-primary" asp-controller="Import" asp-action="Index" asp-route-hoursRange="1">Import last full hour</a>
+        <a class="btn btn-outline-primary" asp-controller="Import" asp-action="Index" asp-route-hoursRange="24">Import last 24 hours</a>
+    </p>
+
+    <p>
         <a class="btn btn-outline-primary" asp-controller="Artist" asp-action="ArtistsByName">Artists by Name</a>
         <a class="btn btn-outline-primary" asp-controller="Artist" asp-action="ArtistsBySongsCount">Artists by Songs Count</a>
     </p>

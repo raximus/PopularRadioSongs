@@ -2,6 +2,6 @@
 {
     public interface IPlaybacksImporterService
     {
-        Task ImportPlaybacksAsync();
+        Task ImportPlaybacksAsync(int hoursRange);
     }
 }
