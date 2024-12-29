@@ -15,6 +15,7 @@ namespace PopularRadioSongs.Persistence
 
             services.AddScoped<IArtistRepository, ArtistRepository>();
             services.AddScoped<ISongRepository, SongRepository>();
+            services.AddScoped<IImportRepository, ImportRepository>();
 
             return services;
         }

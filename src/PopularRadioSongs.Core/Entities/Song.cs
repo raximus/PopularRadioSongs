@@ -25,6 +25,11 @@ namespace PopularRadioSongs.Core.Entities
         }
         private Song() { }
 
+        public void AddArtist(Artist artist)
+        {
+            _artists.Add(artist);
+        }
+
         public override string ToString()
         {
             return string.Format("Song Id: {0}, Title: {1}, Lookup: {2}, Artists Count: {3}, Playbacks Count: {4}", Id, Title, Lookup, _artists.Count, _playbacks.Count);

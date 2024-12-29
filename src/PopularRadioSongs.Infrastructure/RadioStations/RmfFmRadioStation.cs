@@ -1,4 +1,5 @@
-﻿using PopularRadioSongs.Application.Contracts;
+﻿using Microsoft.Extensions.Logging;
+using PopularRadioSongs.Application.Contracts;
 using PopularRadioSongs.Core.Common;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,10 +9,14 @@ namespace PopularRadioSongs.Infrastructure.RadioStations
     public class RmfFmRadioStation : IRadioStation
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger<RmfFmRadioStation> _logger;
 
-        public RmfFmRadioStation(HttpClient httpClient)
+        private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { NumberHandling = JsonNumberHandling.AllowReadingFromString };
+
+        public RmfFmRadioStation(HttpClient httpClient, ILogger<RmfFmRadioStation> logger)
         {
             _httpClient = httpClient;
+            _logger = logger;
         }
 
         public int Id => 1;
@@ -19,15 +24,26 @@ namespace PopularRadioSongs.Infrastructure.RadioStations
 
         public async Task<List<PlaybackDraft>> GetPlaybacksAsync(DateTimeOffset playbacksTime)
         {
-            var playbacksListSourceData = await GetPlaybacksListSourceDataAsync();
+            try
+            {
+                var playbacksListSourceData = await GetPlaybacksListSourceDataAsync();
 
-            var playbacksId = ConvertDataToPlaybacksId(playbacksListSourceData, playbacksTime);
+                var playbacksId = ConvertDataToPlaybacksId(playbacksListSourceData, playbacksTime);
 
-            var playbacksDetailsSourceData = await GetPlaybacksDetailsSourceDataAsync(playbacksId);
+                var playbacksDetailsSourceData = await GetPlaybacksDetailsSourceDataAsync(playbacksId);
 
-            var playbacks = ConvertDataToPlaybacks(playbacksDetailsSourceData);
+                var playbacks = ConvertDataToPlaybacks(playbacksDetailsSourceData);
 
-            return playbacks;
+                _logger.LogInformation("Downloaded {playbacksCount} Playbacks for Radio {radioName}, time: {playbacksTime}", playbacks.Count, Name, playbacksTime);
+
+                return playbacks;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while downloading Playbacks for Radio {radioName}, time: {playbacksTime}", Name, playbacksTime);
+
+                return new List<PlaybackDraft>();
+            }
         }
 
         private async Task<string> GetPlaybacksListSourceDataAsync()
@@ -37,9 +53,9 @@ namespace PopularRadioSongs.Infrastructure.RadioStations
             return await sourceResponse.Content.ReadAsStringAsync();
         }
 
-        private List<int> ConvertDataToPlaybacksId(string sourceData, DateTimeOffset playbacksTime)
+        private static List<int> ConvertDataToPlaybacksId(string sourceData, DateTimeOffset playbacksTime)
         {
-            var responseData = JsonSerializer.Deserialize<List<RmfFmListResponse>>(sourceData, new JsonSerializerOptions { NumberHandling = JsonNumberHandling.AllowReadingFromString });
+            var responseData = JsonSerializer.Deserialize<List<RmfFmListResponse>>(sourceData, _jsonSerializerOptions);
 
             if (responseData is not null)
             {
@@ -60,9 +76,9 @@ namespace PopularRadioSongs.Infrastructure.RadioStations
             return await sourceResponse.Content.ReadAsStringAsync();
         }
 
-        private List<PlaybackDraft> ConvertDataToPlaybacks(string sourceData)
+        private static List<PlaybackDraft> ConvertDataToPlaybacks(string sourceData)
         {
-            var responseData = JsonSerializer.Deserialize<Dictionary<int, RmfFmDetailsResponse>>(sourceData, new JsonSerializerOptions { NumberHandling = JsonNumberHandling.AllowReadingFromString });
+            var responseData = JsonSerializer.Deserialize<Dictionary<int, RmfFmDetailsResponse>>(sourceData, _jsonSerializerOptions);
 
             if (responseData is not null)
             {

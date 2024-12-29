@@ -12,8 +12,8 @@ namespace PopularRadioSongs.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddHangfire(configuration =>
-                configuration.UseInMemoryStorage());
+            services.AddHangfire(configuration => configuration.UseInMemoryStorage()
+                .UseFilter(new AutomaticRetryAttribute() { Attempts = 3, DelaysInSeconds = [600] }));
 
             services.AddHangfireServer();
 
@@ -22,9 +22,9 @@ namespace PopularRadioSongs.Infrastructure
             services.AddHttpClient(Options.DefaultName).ConfigureHttpClient(options => options.DefaultRequestHeaders.Accept.ParseAdd("application/json"))
                 .ConfigurePrimaryHttpMessageHandler(h => new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
 
-            //services.AddScoped<IRadioStation, RmfFmRadioStation>();
-            //services.AddScoped<IRadioStation, ZetRadioStation>();
-            //services.AddScoped<IRadioStation, EskaRadioStation>();
+            services.AddScoped<IRadioStation, RmfFmRadioStation>();
+            services.AddScoped<IRadioStation, ZetRadioStation>();
+            services.AddScoped<IRadioStation, EskaRadioStation>();
 
             return services;
         }

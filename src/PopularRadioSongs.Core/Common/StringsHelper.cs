@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace PopularRadioSongs.Core.Common
 {
-    public static class StringsHelper
+    public static partial class StringsHelper
     {
-        private static readonly Dictionary<string, string> DiacriticsMap = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> _diacriticsMap = new Dictionary<string, string>()
             {
                 { "ą", "a" },
                 { "ć", "c" },
@@ -44,8 +44,10 @@ namespace PopularRadioSongs.Core.Common
                 { "ß", "b" },
                 { "å", "a" }
             };
-        private static readonly Regex DiacriticsRegex = new Regex(string.Join("|", DiacriticsMap.Keys), RegexOptions.Compiled);
-        private static readonly Regex LetterNumberRegex = new Regex("[^0-9a-z]", RegexOptions.Compiled);
+        private static readonly Regex _diacriticsRegex = new Regex(string.Join("|", _diacriticsMap.Keys), RegexOptions.Compiled);
+
+        [GeneratedRegex("[^0-9a-z]")]
+        private static partial Regex LetterNumberRegex();
 
         public static string StandardizeString(string text)
         {
@@ -56,11 +58,11 @@ namespace PopularRadioSongs.Core.Common
 
         public static string LookupString(string text)
         {
-            text = DiacriticsRegex.Replace(text.ToLower(), m => DiacriticsMap[m.Value]);
+            text = _diacriticsRegex.Replace(text.ToLower(), m => _diacriticsMap[m.Value]);
 
             text = text.Replace("the ", string.Empty);
 
-            return LetterNumberRegex.Replace(text, string.Empty);
+            return LetterNumberRegex().Replace(text, string.Empty);
         }
     }
 }
