@@ -18,28 +18,15 @@ namespace PopularRadioSongs.Persistence.Repositories
             return await _dbContext.Artists.FirstOrDefaultAsync(a => a.Lookup == lookup);
         }
 
-        public async Task<Song?> GetSongByLookupsAsync(string songLookup, List<string> artistsLookups)
+        public async Task<Song?> GetSongByLookupAndArtistsAsync(string songLookup, List<Artist> artists)
         {
-            return await _dbContext.Songs.Include(s => s.Artists).Where(s => s.Lookup == songLookup && s.Artists.Any(a => artistsLookups.Contains(a.Lookup))).FirstOrDefaultAsync();
+            return await _dbContext.Songs.Include(s => s.Artists).FirstOrDefaultAsync(s => s.Lookup == songLookup && s.Artists.Any(a => artists.Contains(a)));
         }
 
-        public async Task AddArtistAsync(Artist artist)
-        {
-            await _dbContext.Artists.AddAsync(artist);
-        }
-
-        public async Task AddSongAsync(Song song)
-        {
-            await _dbContext.Songs.AddAsync(song);
-        }
-
-        public async Task AddPlaybackAsync(Playback playback)
+        public async Task AddAndSaveAsync(Playback playback)
         {
             await _dbContext.Playbacks.AddAsync(playback);
-        }
 
-        public async Task SaveAsync()
-        {
             await _dbContext.SaveChangesAsync();
         }
     }

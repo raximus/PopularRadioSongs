@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using PopularRadioSongs.Application.Contracts;
+using PopularRadioSongs.Core.Common;
 using PopularRadioSongs.Core.Entities;
 
 namespace PopularRadioSongs.Application.Services
@@ -30,61 +31,49 @@ namespace PopularRadioSongs.Application.Services
 
                 var newArtistsCount = 0;
                 var newSongsCount = 0;
-                var updatedSongsArtistsCount = 0;
+                var appendedSongArtistsCount = 0;
                 foreach (var playbackDraft in playbacks)
                 {
-                    var song = await _importRepository.GetSongByLookupsAsync(playbackDraft.SongLookup, playbackDraft.Artists.Select(a => a.Lookup).ToList());
+                    (var artists, newArtistsCount) = await GetArtistsAsync(playbackDraft, newArtistsCount);
+
+                    var song = await _importRepository.GetSongByLookupAndArtistsAsync(playbackDraft.SongLookup, artists);
 
                     if (song == null)
                     {
-                        var artists = new List<Artist>(playbackDraft.Artists.Count);
-                        foreach (var artistDraft in playbackDraft.Artists)
-                        {
-                            var artist = await _importRepository.GetArtistByLookupAsync(artistDraft.Lookup);
-
-                            if (artist == null)
-                            {
-                                artist = new Artist(artistDraft.Name);
-                                await _importRepository.AddArtistAsync(artist);
-                                newArtistsCount++;
-                            }
-
-                            artists.Add(artist);
-                        }
-
                         song = new Song(playbackDraft.SongTitle, artists);
-                        await _importRepository.AddSongAsync(song);
                         newSongsCount++;
                     }
                     else
                     {
-                        foreach (var artistDraft in playbackDraft.Artists)
-                        {
-                            if (!song.Artists.Any(a => a.Lookup == artistDraft.Lookup))
-                            {
-                                var artist = await _importRepository.GetArtistByLookupAsync(artistDraft.Lookup);
-
-                                if (artist == null)
-                                {
-                                    artist = new Artist(artistDraft.Name);
-                                    await _importRepository.AddArtistAsync(artist);
-                                    newArtistsCount++;
-                                }
-
-                                song.AddArtist(artist);
-                                updatedSongsArtistsCount++;
-                            }
-                        }
+                        appendedSongArtistsCount += song.AppendArtists(artists);
                     }
 
                     var playback = new Playback(song, radioStation.Id, playbackDraft.PlayTime);
-                    await _importRepository.AddPlaybackAsync(playback);
 
-                    await _importRepository.SaveAsync();
+                    await _importRepository.AddAndSaveAsync(playback);
                 }
 
-                _logger.LogInformation("Imported {playbacksCount} Playbacks, including {newSongsCount} new songs, {newArtistsCount} new artists, and {updatedSongsArtistsCount} updated song artists", playbacks.Count, newSongsCount, newArtistsCount, updatedSongsArtistsCount);
+                _logger.LogInformation("Imported {playbacksCount} Playbacks, including {newSongsCount} new songs, {newArtistsCount} new artists, and {appendedSongArtistsCount} appended song artists", playbacks.Count, newSongsCount, newArtistsCount, appendedSongArtistsCount);
             }
+        }
+
+        private async Task<(List<Artist> artists, int newArtistsCount)> GetArtistsAsync(PlaybackDraft playbackDraft, int newArtistsCount)
+        {
+            var artists = new List<Artist>(playbackDraft.Artists.Count);
+            foreach (var artistDraft in playbackDraft.Artists)
+            {
+                var artist = await _importRepository.GetArtistByLookupAsync(artistDraft.Lookup);
+
+                if (artist == null)
+                {
+                    artist = new Artist(artistDraft.Name);
+                    newArtistsCount++;
+                }
+
+                artists.Add(artist);
+            }
+
+            return (artists, newArtistsCount);
         }
     }
 }

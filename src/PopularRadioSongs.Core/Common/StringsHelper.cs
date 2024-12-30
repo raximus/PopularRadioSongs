@@ -49,11 +49,14 @@ namespace PopularRadioSongs.Core.Common
         [GeneratedRegex("[^0-9a-z]")]
         private static partial Regex LetterNumberRegex();
 
+        [GeneratedRegex(@"[\(\[].*?[\)\]]")]
+        private static partial Regex BracketsRegex();
+
         public static string StandardizeString(string text)
         {
-            var textInfo = CultureInfo.InvariantCulture.TextInfo;
+            text = BracketsRegex().Replace(text, string.Empty);
 
-            return textInfo.ToTitleCase(text.Trim().ToLower());
+            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text.Trim().ToLower());
         }
 
         public static string LookupString(string text)

@@ -25,9 +25,19 @@ namespace PopularRadioSongs.Core.Entities
         }
         private Song() { }
 
-        public void AddArtist(Artist artist)
+        public int AppendArtists(List<Artist> artistsToAppend)
         {
-            _artists.Add(artist);
+            var appendedArtistsCount = 0;
+            foreach (var artistToAppend in artistsToAppend)
+            {
+                if (!_artists.Any(a => a.Lookup == artistToAppend.Lookup))
+                {
+                    _artists.Add(artistToAppend);
+                    appendedArtistsCount++;
+                }
+            }
+
+            return appendedArtistsCount;
         }
 
         public override string ToString()
