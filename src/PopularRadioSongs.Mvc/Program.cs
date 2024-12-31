@@ -32,6 +32,13 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapGet("/ping", (ILogger<Program> logger) =>
+{
+    logger.LogInformation("Ping-pong time {time}", DateTimeOffset.Now);
+
+    return "pong";
+});
+
 app.StartBackgroundTasks();
 
 app.Run();
