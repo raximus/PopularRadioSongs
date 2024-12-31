@@ -14,7 +14,7 @@ namespace PopularRadioSongs.Infrastructure
 
         public void StartTasks()
         {
-            _recurringJobManager.AddOrUpdate<IPlaybacksImporterService>("PlaybacksImporterJob", p => p.ImportPlaybacksAsync(1), Cron.Hourly(15));
+            _recurringJobManager.AddOrUpdate<IPlaybacksImporterService>("PlaybacksImporterJob", p => p.ImportPlaybacksAsync(1), Cron.Hourly(18));
         }
     }
 }
