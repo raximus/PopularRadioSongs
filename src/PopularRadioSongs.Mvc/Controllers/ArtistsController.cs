@@ -6,16 +6,16 @@ using PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountList;
 
 namespace PopularRadioSongs.Mvc.Controllers
 {
-    public class ArtistController : Controller
+    public class ArtistsController : Controller
     {
         private readonly ISender _sender;
 
-        public ArtistController(ISender sender)
+        public ArtistsController(ISender sender)
         {
             _sender = sender;
         }
 
-        [Route("Artist/{artistId:int}")]
+        [Route("Artists/{artistId:int}")]
         public async Task<IActionResult> Index(int artistId)
         {
             var artist = await _sender.Send(new GetArtistDetailsQuery(artistId));

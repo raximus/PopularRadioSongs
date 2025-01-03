@@ -15,6 +15,7 @@ namespace PopularRadioSongs.Application
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddTransient<IPlaybacksImporterService, PlaybacksImporterService>();
+            services.AddSingleton<IRadioNamesService, RadioNamesService>();
 
             return services;
         }

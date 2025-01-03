@@ -1,0 +1,35 @@
+﻿@model PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks.LastPlaybacksDto
+
+@{
+    ViewData["Title"] = "Radio " + Model.RadioName;
+}
+
+<h1>Radio @Model.RadioName</h1>
+
+<div>
+    <h4>Playbacks</h4>
+
+    <table class="table">
+        <tbody>
+            @foreach (var playback in Model.Playbacks)
+            {
+                <tr>
+                    <td>
+                        @playback.PlayTime.ToString("g")
+                        <a asp-controller="Songs" asp-action="Index" asp-route-songId="@playback.SongId">@playback.SongTitle</a> -
+                        @for (int i = 0; i < playback.Artists.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                <text> | </text>
+                            }
+
+                            var artist = playback.Artists[i];
+                            <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

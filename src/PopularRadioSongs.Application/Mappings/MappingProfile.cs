@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using PopularRadioSongs.Application.UseCases.Artists.GetArtistDetails;
 using PopularRadioSongs.Application.UseCases.Artists.GetArtistsList;
+using PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks;
 using PopularRadioSongs.Application.UseCases.Songs.GetSongDetails;
 using PopularRadioSongs.Core.Entities;
 
-namespace PopularRadioSongs.Application
+namespace PopularRadioSongs.Application.Mappings
 {
     public class MappingProfile : Profile
     {
@@ -17,6 +18,10 @@ namespace PopularRadioSongs.Application
 
             CreateMap<Song, SongDetailsDto>();
             CreateMap<Artist, ArtistSongDetailsDto>();
+            CreateMap<Playback, PlaybackSongDetailsDto>();
+
+            CreateMap<Playback, PlaybackLastPlaybacksDto>().ForCtorParam("Artists", x => x.MapFrom(y => y.Song.Artists));
+            CreateMap<Artist, ArtistLastPlaybackDto>();
         }
     }
 }

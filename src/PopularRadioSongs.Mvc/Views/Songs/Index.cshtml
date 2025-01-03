@@ -1,0 +1,49 @@
+﻿@model PopularRadioSongs.Application.UseCases.Songs.GetSongDetails.SongDetailsDto
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>Song @Model.Title</h1>
+
+<div>
+    <h4>Artists</h4>
+
+    <table class="table">
+        <tbody>
+            @foreach (var artist in Model.Artists)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h4>Playbacks</h4>
+
+    @if (Model.Playbacks.Any())
+    {
+        <table class="table">
+            <tbody>
+                @foreach (var playback in Model.Playbacks)
+                {
+                    <tr>
+                        <td>
+                            @playback.PlayTime.ToString("g")
+                            <a asp-controller="RadioPlaybacks" asp-action="Index" asp-route-radioId="@playback.RadioId">@playback.RadioName</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No last playbacks</p>
+    }
+</div>

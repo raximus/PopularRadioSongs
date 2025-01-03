@@ -15,7 +15,7 @@
             {
                 <tr>
                     <td>
-                        <a asp-controller="Song" asp-action="Index" asp-route-songId="@song.Id">@song.Title</a> -
+                        <a asp-controller="Songs" asp-action="Index" asp-route-songId="@song.Id">@song.Title</a> -
                         @for (int i = 0; i < song.Artists.Count; i++)
                         {
                             if (i > 0)
@@ -30,7 +30,7 @@
                             }
                             else
                             {
-                                <a asp-controller="Artist" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                                <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
                             }
                         }
                     </td>

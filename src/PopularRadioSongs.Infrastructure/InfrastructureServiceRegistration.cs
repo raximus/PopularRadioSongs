@@ -22,9 +22,9 @@ namespace PopularRadioSongs.Infrastructure
             services.AddHttpClient(Options.DefaultName).ConfigureHttpClient(options => options.DefaultRequestHeaders.Accept.ParseAdd("application/json"))
                 .ConfigurePrimaryHttpMessageHandler(h => new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
 
-            services.AddScoped<IRadioStation, RmfFmRadioStation>();
-            services.AddScoped<IRadioStation, ZetRadioStation>();
-            services.AddScoped<IRadioStation, EskaRadioStation>();
+            services.AddSingleton<IRadioStation, RmfFmRadioStation>();
+            services.AddSingleton<IRadioStation, ZetRadioStation>();
+            services.AddSingleton<IRadioStation, EskaRadioStation>();
 
             return services;
         }
