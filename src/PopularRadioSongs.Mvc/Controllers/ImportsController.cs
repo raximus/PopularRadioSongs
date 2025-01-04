@@ -16,14 +16,14 @@ namespace PopularRadioSongs.Mvc.Controllers
         }
 
         [Route("Imports/{hoursRange:int}")]
-        public async Task<IActionResult> Index(int hoursRange)
+        public async Task<IActionResult> Index(ImportPlaybacksCommand importPlaybacksCommand)
         {
             if (!_hostEnvironment.IsDevelopment())
             {
                 return NotFound();
             }
 
-            await _sender.Send(new ImportPlaybacksCommand(hoursRange));
+            await _sender.Send(importPlaybacksCommand);
 
             return View();
         }

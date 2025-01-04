@@ -25,7 +25,7 @@ namespace PopularRadioSongs.Persistence.Repositories
 
         public async Task<Song?> GetSongWithArtistsAndPlaybacksByIdAsync(int songId)
         {
-            return await _dbContext.Songs.AsNoTracking().Include(s => s.Artists).Include(s => s.Playbacks).FirstOrDefaultAsync(s => s.Id == songId);
+            return await _dbContext.Songs.AsNoTracking().Include(s => s.Artists).Include(s => s.Playbacks.OrderByDescending(p => p.PlayTime)).FirstOrDefaultAsync(s => s.Id == songId);
         }
     }
 }

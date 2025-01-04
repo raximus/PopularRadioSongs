@@ -15,9 +15,9 @@ namespace PopularRadioSongs.Mvc.Controllers
         }
 
         [Route("Songs/{songId:int}")]
-        public async Task<IActionResult> Index(int songId)
+        public async Task<IActionResult> Index(GetSongDetailsQuery songDetailsQuery)
         {
-            var song = await _sender.Send(new GetSongDetailsQuery(songId));
+            var song = await _sender.Send(songDetailsQuery);
 
             if (song == null)
             {

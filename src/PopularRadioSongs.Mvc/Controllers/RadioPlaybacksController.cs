@@ -14,9 +14,9 @@ namespace PopularRadioSongs.Mvc.Controllers
         }
 
         [Route("RadioPlaybacks/{radioId:int}")]
-        public async Task<IActionResult> Index(int radioId)
+        public async Task<IActionResult> Index(GetLastPlaybacksQuery lastPlaybacksQuery)
         {
-            var lastPlaybacks = await _sender.Send(new GetLastPlaybacksQuery(radioId));
+            var lastPlaybacks = await _sender.Send(lastPlaybacksQuery);
 
             if (lastPlaybacks == null)
             {

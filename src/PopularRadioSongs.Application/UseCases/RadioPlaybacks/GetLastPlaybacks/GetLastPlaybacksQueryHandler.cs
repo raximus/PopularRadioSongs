@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using PopularRadioSongs.Application.Contracts;
+using PopularRadioSongs.Application.Extensions;
 
 namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
 {
@@ -28,9 +29,11 @@ namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
 
             var lastPlaybacksDto = _mapper.Map<List<PlaybackLastPlaybacksDto>>(lastPlaybacks);
 
+            var lastPlaybackGroups = lastPlaybacksDto.GroupBy(p => p.PlayTime.ToLastFullHour()).Select(g => new PlaybackGroupLastPlaybacksDto(g.Key, g.Key.AddHours(1), g.ToList())).ToList();
+
             var radioName = _radioNamesService.GetRadioName(request.RadioId);
 
-            return new LastPlaybacksDto(radioName, lastPlaybacksDto);
+            return new LastPlaybacksDto(radioName, lastPlaybackGroups);
         }
     }
 }

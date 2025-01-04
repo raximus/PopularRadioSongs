@@ -15,7 +15,8 @@ namespace PopularRadioSongs.Persistence.Repositories
 
         public async Task<List<Playback>> GetLastRadioPlaybacksAsync(int radioId)
         {
-            return await _dbContext.Playbacks.AsNoTracking().Include(p => p.Song).ThenInclude(s => s.Artists).Where(p => p.RadioId == radioId).ToListAsync();
+            return await _dbContext.Playbacks.AsNoTracking().Include(p => p.Song).ThenInclude(s => s.Artists).Where(p => p.RadioId == radioId)
+                .OrderByDescending(p => p.PlayTime).ToListAsync();
         }
     }
 }

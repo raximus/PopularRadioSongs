@@ -11,24 +11,36 @@
 
     <table class="table">
         <tbody>
-            @foreach (var playback in Model.Playbacks)
+            @foreach (var playbackGroup in Model.PlaybackGroups)
             {
                 <tr>
                     <td>
-                        @playback.PlayTime.ToString("g")
-                        <a asp-controller="Songs" asp-action="Index" asp-route-songId="@playback.SongId">@playback.SongTitle</a> -
-                        @for (int i = 0; i < playback.Artists.Count; i++)
-                        {
-                            if (i > 0)
-                            {
-                                <text> | </text>
-                            }
-
-                            var artist = playback.Artists[i];
-                            <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
-                        }
+                        @playbackGroup.FromTime.ToString("g") - @playbackGroup.ToTime.ToString("t")
+                    </td>
+                    <td>
                     </td>
                 </tr>
+                @foreach (var playback in playbackGroup.Playbacks)
+                {
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            @playback.PlayTime.ToString("t")
+                            <a asp-controller="Songs" asp-action="Index" asp-route-songId="@playback.SongId">@playback.SongTitle</a> -
+                            @for (int i = 0; i < playback.Artists.Count; i++)
+                            {
+                                if (i > 0)
+                                {
+                                    <text> | </text>
+                                }
+
+                                var artist = playback.Artists[i];
+                                <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                            }
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

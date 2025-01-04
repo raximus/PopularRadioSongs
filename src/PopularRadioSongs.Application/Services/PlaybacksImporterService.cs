@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using PopularRadioSongs.Application.Contracts;
+using PopularRadioSongs.Application.Extensions;
 using PopularRadioSongs.Core.Common;
 using PopularRadioSongs.Core.Entities;
 
@@ -20,8 +21,7 @@ namespace PopularRadioSongs.Application.Services
 
         public async Task ImportPlaybacksAsync(int hoursRange)
         {
-            var now = DateTimeOffset.Now;
-            var playbacksTime = new DateTimeOffset(now.Year, now.Month, now.Day, now.Hour, 0, 0, now.Offset).AddHours(-hoursRange);
+            var playbacksTime = DateTimeOffset.Now.ToLastFullHour().AddHours(-hoursRange);
 
             _logger.LogInformation("Start importing Playbacks for {playbacksTime} time", playbacksTime);
 

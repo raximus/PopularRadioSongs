@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PopularRadioSongs.Application.UseCases.Artists.GetArtistsList.ArtistListDto>
+﻿@model IEnumerable<PopularRadioSongs.Application.UseCases.Artists.GetArtistsList.GroupArtistListDto>
 
 @{
     ViewData["Title"] = "Artists by Name";
@@ -8,13 +8,25 @@
 
 <table class="table">
     <tbody>
-        @foreach (var artist in Model)
+        @foreach (var artistGroup in Model)
         {
             <tr>
                 <td>
-                    <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                    @artistGroup.Letter
+                </td>
+                <td>
                 </td>
             </tr>
+            @foreach (var artist in artistGroup.Artists)
+            {
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

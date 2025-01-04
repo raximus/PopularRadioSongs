@@ -21,7 +21,7 @@ namespace PopularRadioSongs.Application.Mappings
             CreateMap<Playback, PlaybackSongDetailsDto>();
 
             CreateMap<Playback, PlaybackLastPlaybacksDto>().ForCtorParam("Artists", x => x.MapFrom(y => y.Song.Artists));
-            CreateMap<Artist, ArtistLastPlaybackDto>();
+            CreateMap<Artist, ArtistLastPlaybacksDto>();
         }
     }
 }

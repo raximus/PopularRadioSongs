@@ -1,8 +1,10 @@
 ﻿namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
 {
-    public record LastPlaybacksDto(string RadioName, List<PlaybackLastPlaybacksDto> Playbacks);
+    public record LastPlaybacksDto(string RadioName, List<PlaybackGroupLastPlaybacksDto> PlaybackGroups);
 
-    public record PlaybackLastPlaybacksDto(DateTimeOffset PlayTime, int SongId, string SongTitle, List<ArtistLastPlaybackDto> Artists);
+    public record PlaybackGroupLastPlaybacksDto(DateTimeOffset FromTime, DateTimeOffset ToTime, List<PlaybackLastPlaybacksDto> Playbacks);
 
-    public record ArtistLastPlaybackDto(int Id, string Name);
+    public record PlaybackLastPlaybacksDto(DateTimeOffset PlayTime, int SongId, string SongTitle, List<ArtistLastPlaybacksDto> Artists);
+
+    public record ArtistLastPlaybacksDto(int Id, string Name);
 }
