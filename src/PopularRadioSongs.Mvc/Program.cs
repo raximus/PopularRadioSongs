@@ -1,8 +1,15 @@
 using PopularRadioSongs.Application;
 using PopularRadioSongs.Infrastructure;
 using PopularRadioSongs.Persistence;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, loggerConfiguration) =>
+{
+    loggerConfiguration.WriteTo.Console();
+    loggerConfiguration.ReadFrom.Configuration(context.Configuration);
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -42,3 +49,5 @@ app.MapGet("/ping", (ILogger<Program> logger) =>
 app.StartBackgroundTasks();
 
 app.Run();
+
+Log.CloseAndFlush();
