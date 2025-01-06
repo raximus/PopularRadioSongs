@@ -18,7 +18,7 @@ namespace PopularRadioSongs.Mvc.Controllers
         {
             var lastPlaybacks = await _sender.Send(lastPlaybacksQuery);
 
-            if (lastPlaybacks == null)
+            if (lastPlaybacks is null)
             {
                 return NotFound();
             }

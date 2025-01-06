@@ -7,5 +7,6 @@ namespace PopularRadioSongs.Application.Contracts
     {
         Task<List<SongTitleCountListDto>> GetSongTitleCountListAsync();
         Task<Song?> GetSongWithArtistsAndPlaybacksByIdAsync(int songId);
+        Task<List<Song>> GetSongsBySearchAsync(string searchLookup);
     }
 }

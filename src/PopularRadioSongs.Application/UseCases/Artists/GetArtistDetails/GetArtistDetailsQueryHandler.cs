@@ -19,7 +19,7 @@ namespace PopularRadioSongs.Application.UseCases.Artists.GetArtistDetails
         {
             var artist = await _artistRepository.GetArtistWithSongsByIdAsync(request.ArtistId);
 
-            if (artist == null)
+            if (artist is null)
             {
                 return null;
             }

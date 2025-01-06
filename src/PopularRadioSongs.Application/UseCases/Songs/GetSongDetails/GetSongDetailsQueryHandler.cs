@@ -21,7 +21,7 @@ namespace PopularRadioSongs.Application.UseCases.Songs.GetSongDetails
         {
             var song = await _songRepository.GetSongWithArtistsAndPlaybacksByIdAsync(request.SongId);
 
-            if (song == null)
+            if (song is null)
             {
                 return null;
             }

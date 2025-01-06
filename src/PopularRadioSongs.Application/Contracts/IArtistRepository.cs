@@ -8,5 +8,6 @@ namespace PopularRadioSongs.Application.Contracts
         Task<List<Artist>> GetArtistsAsync();
         Task<List<ArtistSongsCountListDto>> GetArtistSongsCountListAsync();
         Task<Artist?> GetArtistWithSongsByIdAsync(int artistId);
+        Task<List<Artist>> GetArtistsBySearchAsync(string searchLookup);
     }
 }

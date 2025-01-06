@@ -18,7 +18,7 @@ namespace PopularRadioSongs.Core.Entities
         {
             Title = StringsHelper.StandardizeString(title);
             Lookup = StringsHelper.LookupString(Title);
-            if (artists != null)
+            if (artists is not null)
             {
                 _artists = artists;
             }

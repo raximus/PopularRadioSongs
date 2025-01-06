@@ -10,7 +10,7 @@
 
         public Playback(Song song, int radioId, DateTimeOffset playTime)
         {
-            if (song != null)
+            if (song is not null)
             {
                 SongId = song.Id;
                 Song = song;

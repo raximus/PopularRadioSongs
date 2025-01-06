@@ -27,5 +27,10 @@ namespace PopularRadioSongs.Persistence.Repositories
         {
             return await _dbContext.Songs.AsNoTracking().Include(s => s.Artists).Include(s => s.Playbacks.OrderByDescending(p => p.PlayTime)).FirstOrDefaultAsync(s => s.Id == songId);
         }
+
+        public async Task<List<Song>> GetSongsBySearchAsync(string searchLookup)
+        {
+            return await _dbContext.Songs.AsNoTracking().Include(s => s.Artists).Where(s => s.Lookup.Contains(searchLookup)).ToListAsync();
+        }
     }
 }

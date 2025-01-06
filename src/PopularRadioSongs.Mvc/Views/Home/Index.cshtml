@@ -29,10 +29,14 @@
         <a class="btn btn-outline-primary" asp-controller="Songs" asp-action="SongsByTitleCount">Songs by Title Count</a>
     </p>
 
-    <div class="btn-group" role="group">
+    <p class="btn-group" role="group">
         @foreach (var radioStationName in Model.RadioStationNames)
         {
             <a class="btn btn-outline-primary" asp-controller="RadioPlaybacks" asp-action="Index" asp-route-radioId="@radioStationName.Key"> Playbacks Radio @radioStationName.Value</a>
         }
-    </div>
+    </p>
+
+    <p>
+        <a class="btn btn-outline-primary" asp-controller="Search" asp-action="Index">Search Artist or Song</a>
+    </p>
 </div>

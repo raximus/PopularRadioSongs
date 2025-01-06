@@ -29,5 +29,10 @@ namespace PopularRadioSongs.Persistence.Repositories
         {
             return await _dbContext.Artists.Include(a => a.Songs).ThenInclude(s => s.Artists).FirstOrDefaultAsync(a => a.Id == artistId);
         }
+
+        public async Task<List<Artist>> GetArtistsBySearchAsync(string searchLookup)
+        {
+            return await _dbContext.Artists.AsNoTracking().Where(a => a.Lookup.Contains(searchLookup)).ToListAsync();
+        }
     }
 }

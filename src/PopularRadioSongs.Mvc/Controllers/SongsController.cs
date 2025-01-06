@@ -19,7 +19,7 @@ namespace PopularRadioSongs.Mvc.Controllers
         {
             var song = await _sender.Send(songDetailsQuery);
 
-            if (song == null)
+            if (song is null)
             {
                 return NotFound();
             }

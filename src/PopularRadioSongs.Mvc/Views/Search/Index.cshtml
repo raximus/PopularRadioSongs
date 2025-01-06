@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Search</h1>
+
+<form asp-controller="Search" asp-action="Results" method="get">
+    <div class="mb-3">
+        <label for="searchValue" class="form-label">Search value</label>
+
+        <div class="input-group">
+            <span class="input-group-text">Search</span>
+            <input type="search" class="form-control" id="searchValue" name="searchValue" placeholder="Search value" />
+        </div>
+
+        <div class="form-text">Text of full or fragment Artist or Song</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>

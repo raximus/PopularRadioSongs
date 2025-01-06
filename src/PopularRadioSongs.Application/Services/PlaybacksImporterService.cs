@@ -38,7 +38,7 @@ namespace PopularRadioSongs.Application.Services
 
                     var song = await _importRepository.GetSongByLookupAndArtistsAsync(playbackDraft.SongLookup, artists);
 
-                    if (song == null)
+                    if (song is null)
                     {
                         song = new Song(playbackDraft.SongTitle, artists);
                         newSongsCount++;
@@ -64,7 +64,7 @@ namespace PopularRadioSongs.Application.Services
             {
                 var artist = await _importRepository.GetArtistByLookupAsync(artistDraft.Lookup);
 
-                if (artist == null)
+                if (artist is null)
                 {
                     artist = new Artist(artistDraft.Name);
                     newArtistsCount++;

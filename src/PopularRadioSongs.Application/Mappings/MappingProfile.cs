@@ -2,6 +2,7 @@
 using PopularRadioSongs.Application.UseCases.Artists.GetArtistDetails;
 using PopularRadioSongs.Application.UseCases.Artists.GetArtistsList;
 using PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks;
+using PopularRadioSongs.Application.UseCases.Search.GetSearchResults;
 using PopularRadioSongs.Application.UseCases.Songs.GetSongDetails;
 using PopularRadioSongs.Core.Entities;
 
@@ -22,6 +23,9 @@ namespace PopularRadioSongs.Application.Mappings
 
             CreateMap<Playback, PlaybackLastPlaybacksDto>().ForCtorParam("Artists", x => x.MapFrom(y => y.Song.Artists));
             CreateMap<Artist, ArtistLastPlaybacksDto>();
+
+            CreateMap<Song, SongSearchResultsDto>();
+            CreateMap<Artist, ArtistSearchResultsDto>();
         }
     }
 }

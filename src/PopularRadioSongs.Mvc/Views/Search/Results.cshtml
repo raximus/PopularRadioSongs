@@ -1,0 +1,64 @@
+﻿@model PopularRadioSongs.Application.UseCases.Search.GetSearchResults.SearchResultsDto
+
+@{
+    ViewData["Title"] = "Search results";
+}
+
+<h1>Search results for: @Model.SearchValue</h1>
+
+@if (Model.Results.Any())
+{
+    <div>
+        <h4>Artists</h4>
+
+        <table class="table">
+            <tbody>
+                @foreach (var searchResult in Model.Results)
+                {
+                    if (searchResult.Artist is not null)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@searchResult.Artist.Id">@searchResult.Artist.Name</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h4>Songs</h4>
+
+        <table class="table">
+            <tbody>
+                @foreach (var searchResult in Model.Results)
+                {
+                    if (searchResult.Song is not null)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Songs" asp-action="Index" asp-route-songId="@searchResult.Song.Id">@searchResult.Song.Title</a> -
+                                @for (int i = 0; i < searchResult.Song.Artists.Count; i++)
+                                {
+                                    if (i > 0)
+                                    {
+                                        <text> | </text>
+                                    }
+
+                                    var artist = searchResult.Song.Artists[i];
+                                    <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No results</p>
+}
