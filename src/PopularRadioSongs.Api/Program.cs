@@ -1,4 +1,9 @@
+using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using PopularRadioSongs.Application;
+using PopularRadioSongs.Application.UseCases.Artists.GetArtistDetails;
+using PopularRadioSongs.Application.UseCases.Artists.GetArtistsList;
+using PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountList;
 using PopularRadioSongs.Infrastructure;
 using PopularRadioSongs.Persistence;
 using Serilog;
@@ -35,6 +40,29 @@ app.MapGet("/ping", (ILogger<Program> logger) =>
     logger.LogInformation("Ping-pong time {time}", DateTimeOffset.Now);
 
     return "pong";
+});
+
+var apiGroup = app.MapGroup("/api");
+
+apiGroup.MapGet("/artists", async (ISender sender) =>
+{
+    var artists = await sender.Send(new GetArtistsListQuery());
+
+    return TypedResults.Ok(artists);
+});
+
+apiGroup.MapGet("/artists/songscount", async (ISender sender) =>
+{
+    var artists = await sender.Send(new GetArtistsSongsCountListQuery());
+
+    return TypedResults.Ok(artists);
+});
+
+apiGroup.MapGet("/artists/{artistId:int}", async Task<Results<Ok<ArtistDetailsDto>, NotFound>> ([AsParameters] GetArtistDetailsQuery artistDetailsQuery, ISender sender) =>
+{
+    var artist = await sender.Send(artistDetailsQuery);
+
+    return artist is null ? TypedResults.NotFound() : TypedResults.Ok(artist);
 });
 
 //app.StartBackgroundTasks();

@@ -15,8 +15,22 @@ namespace PopularRadioSongs.Mvc.Controllers
             _sender = sender;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var artists = await _sender.Send(new GetArtistsListQuery());
+
+            return View(artists);
+        }
+
+        public async Task<IActionResult> SongsCount()
+        {
+            var artists = await _sender.Send(new GetArtistsSongsCountListQuery());
+
+            return View(artists);
+        }
+
         [Route("Artists/{artistId:int}")]
-        public async Task<IActionResult> Index(GetArtistDetailsQuery artistDetailsQuery)
+        public async Task<IActionResult> Details(GetArtistDetailsQuery artistDetailsQuery)
         {
             var artist = await _sender.Send(artistDetailsQuery);
 
@@ -26,20 +40,6 @@ namespace PopularRadioSongs.Mvc.Controllers
             }
 
             return View(artist);
-        }
-
-        public async Task<IActionResult> ArtistsByName()
-        {
-            var artists = await _sender.Send(new GetArtistsListQuery());
-
-            return View(artists);
-        }
-
-        public async Task<IActionResult> ArtistsBySongsCount()
-        {
-            var artists = await _sender.Send(new GetArtistsSongsCountListQuery());
-
-            return View(artists);
         }
     }
 }

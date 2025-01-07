@@ -19,7 +19,7 @@
                     {
                         <tr>
                             <td>
-                                <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@searchResult.Artist.Id">@searchResult.Artist.Name</a>
+                                <a asp-controller="Artists" asp-action="Details" asp-route-artistId="@searchResult.Artist.Id">@searchResult.Artist.Name</a>
                             </td>
                         </tr>
                     }
@@ -48,7 +48,7 @@
                                     }
 
                                     var artist = searchResult.Song.Artists[i];
-                                    <a asp-controller="Artists" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                                    <a asp-controller="Artists" asp-action="Details" asp-route-artistId="@artist.Id">@artist.Name</a>
                                 }
                             </td>
                         </tr>
