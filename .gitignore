@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 
 /src/PopularRadioSongs.Mvc/Logs/log-*.txt
+/src/PopularRadioSongs.Api/Logs/log-*.txt
