@@ -4,6 +4,9 @@ using PopularRadioSongs.Application;
 using PopularRadioSongs.Application.UseCases.Artists.GetArtistDetails;
 using PopularRadioSongs.Application.UseCases.Artists.GetArtistsList;
 using PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountList;
+using PopularRadioSongs.Application.UseCases.Songs.GetSongDetails;
+using PopularRadioSongs.Application.UseCases.Songs.GetSongsList;
+using PopularRadioSongs.Application.UseCases.Songs.GetSongsTitleCountList;
 using PopularRadioSongs.Infrastructure;
 using PopularRadioSongs.Persistence;
 using Serilog;
@@ -63,6 +66,27 @@ apiGroup.MapGet("/artists/{artistId:int}", async Task<Results<Ok<ArtistDetailsDt
     var artist = await sender.Send(artistDetailsQuery);
 
     return artist is null ? TypedResults.NotFound() : TypedResults.Ok(artist);
+});
+
+apiGroup.MapGet("/songs", async (ISender sender) =>
+{
+    var songs = await sender.Send(new GetSongsListQuery());
+
+    return TypedResults.Ok(songs);
+});
+
+apiGroup.MapGet("/songs/titlecount", async (ISender sender) =>
+{
+    var songs = await sender.Send(new GetSongsTitleCountListQuery());
+
+    return TypedResults.Ok(songs);
+});
+
+apiGroup.MapGet("/songs/{songId:int}", async Task<Results<Ok<SongDetailsDto>, NotFound>> ([AsParameters] GetSongDetailsQuery songDetailsQuery, ISender sender) =>
+{
+    var song = await sender.Send(songDetailsQuery);
+
+    return song is null ? TypedResults.NotFound() : TypedResults.Ok(song);
 });
 
 //app.StartBackgroundTasks();

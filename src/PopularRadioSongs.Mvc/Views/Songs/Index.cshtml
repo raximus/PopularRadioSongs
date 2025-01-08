@@ -1,49 +1,42 @@
-﻿@model PopularRadioSongs.Application.UseCases.Songs.GetSongDetails.SongDetailsDto
+﻿@model IEnumerable<PopularRadioSongs.Application.UseCases.Songs.GetSongsList.GroupSongListDto>
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = "Songs by Name";
 }
 
-<h1>Song @Model.Title</h1>
+<h1>Songs by Name</h1>
 
-<div>
-    <h4>Artists</h4>
-
-    <table class="table">
-        <tbody>
-            @foreach (var artist in Model.Artists)
+<table class="table">
+    <tbody>
+        @foreach (var songGroup in Model)
+        {
+            <tr>
+                <td>
+                    @songGroup.Letter
+                </td>
+                <td>
+                </td>
+            </tr>
+            @foreach (var song in songGroup.Songs)
             {
                 <tr>
                     <td>
-                        <a asp-controller="Artists" asp-action="Details" asp-route-artistId="@artist.Id">@artist.Name</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Songs" asp-action="Details" asp-route-songId="@song.Id">@song.Title</a> -
+                        @for (int i = 0; i < song.Artists.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                <text> | </text>
+                            }
+
+                            var artist = song.Artists[i];
+                            <a asp-controller="Artists" asp-action="Details" asp-route-artistId="@artist.Id">@artist.Name</a>
+                        }
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <h4>Playbacks</h4>
-
-    @if (Model.Playbacks.Any())
-    {
-        <table class="table">
-            <tbody>
-                @foreach (var playback in Model.Playbacks)
-                {
-                    <tr>
-                        <td>
-                            @playback.PlayTime.ToString("g")
-                            <a asp-controller="RadioPlaybacks" asp-action="Index" asp-route-radioId="@playback.RadioId">Radio @playback.RadioName</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No last playbacks</p>
-    }
-</div>
+        }
+    </tbody>
+</table>

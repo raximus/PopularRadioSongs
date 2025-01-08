@@ -14,6 +14,11 @@ namespace PopularRadioSongs.Persistence.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<List<Song>> GetSongsAsync()
+        {
+            return await _dbContext.Songs.AsNoTracking().Include(s => s.Artists).OrderBy(s => s.Title).ToListAsync();
+        }
+
         public async Task<List<SongTitleCountListDto>> GetSongTitleCountListAsync()
         {
             return await _dbContext.Songs.GroupBy(s => s.Lookup).Where(g => g.Count() > 1).OrderByDescending(g => g.Count())

@@ -27,7 +27,7 @@
                         </td>
                         <td>
                             @playback.PlayTime.ToString("t")
-                            <a asp-controller="Songs" asp-action="Index" asp-route-songId="@playback.SongId">@playback.SongTitle</a> -
+                            <a asp-controller="Songs" asp-action="Details" asp-route-songId="@playback.SongId">@playback.SongTitle</a> -
                             @for (int i = 0; i < playback.Artists.Count; i++)
                             {
                                 if (i > 0)

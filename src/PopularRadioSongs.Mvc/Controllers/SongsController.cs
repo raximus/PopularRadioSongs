@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PopularRadioSongs.Application.UseCases.Songs.GetSongDetails;
+using PopularRadioSongs.Application.UseCases.Songs.GetSongsList;
 using PopularRadioSongs.Application.UseCases.Songs.GetSongsTitleCountList;
 
 namespace PopularRadioSongs.Mvc.Controllers
@@ -14,8 +15,22 @@ namespace PopularRadioSongs.Mvc.Controllers
             _sender = sender;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var songs = await _sender.Send(new GetSongsListQuery());
+
+            return View(songs);
+        }
+
+        public async Task<IActionResult> TitleCount()
+        {
+            var songs = await _sender.Send(new GetSongsTitleCountListQuery());
+
+            return View(songs);
+        }
+
         [Route("Songs/{songId:int}")]
-        public async Task<IActionResult> Index(GetSongDetailsQuery songDetailsQuery)
+        public async Task<IActionResult> Details(GetSongDetailsQuery songDetailsQuery)
         {
             var song = await _sender.Send(songDetailsQuery);
 
@@ -25,13 +40,6 @@ namespace PopularRadioSongs.Mvc.Controllers
             }
 
             return View(song);
-        }
-
-        public async Task<IActionResult> SongsByTitleCount()
-        {
-            var songs = await _sender.Send(new GetSongsTitleCountListQuery());
-
-            return View(songs);
         }
     }
 }
