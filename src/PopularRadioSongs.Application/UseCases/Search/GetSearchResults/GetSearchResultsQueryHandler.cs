@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
 using PopularRadioSongs.Application.Contracts;
+using PopularRadioSongs.Application.Results;
 using PopularRadioSongs.Core.Common;
 
 namespace PopularRadioSongs.Application.UseCases.Search.GetSearchResults
 {
-    public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuery, SearchResultsDto>
+    public class GetSearchResultsQueryHandler : IRequestHandler<GetSearchResultsQuery, UseCaseResult<SearchResultsDto>>
     {
         private readonly IArtistRepository _artistRepository;
         private readonly ISongRepository _songRepository;
@@ -18,7 +19,7 @@ namespace PopularRadioSongs.Application.UseCases.Search.GetSearchResults
             _mapper = mapper;
         }
 
-        public async Task<SearchResultsDto> Handle(GetSearchResultsQuery request, CancellationToken cancellationToken)
+        public async Task<UseCaseResult<SearchResultsDto>> Handle(GetSearchResultsQuery request, CancellationToken cancellationToken)
         {
             var searchLookup = StringsHelper.LookupString(StringsHelper.StandardizeString(request.SearchValue));
 
@@ -31,7 +32,7 @@ namespace PopularRadioSongs.Application.UseCases.Search.GetSearchResults
             var searchResults = artistsDto.Select(a => new ResultSearchResultsDto(null, a)).ToList();
             searchResults.AddRange(songsDto.Select(s => new ResultSearchResultsDto(s, null)));
 
-            return new SearchResultsDto(request.SearchValue, searchResults);
+            return UseCaseResult<SearchResultsDto>.Success(new SearchResultsDto(request.SearchValue, searchResults));
         }
     }
 }

@@ -10,32 +10,36 @@ namespace PopularRadioSongs.Api.Endpoints
     {
         public static void RegisterArtistsEndpoints(this RouteGroupBuilder builder)
         {
-            builder.MapGet("/artists", GetArtistsList).WithName("GetArtistsList").WithSummary("Get Artists List");
+            builder.MapGet("/artists", GetArtistsList)
+                .WithName("GetArtistsList").WithSummary("Get Artists List");
 
-            builder.MapGet("/artists/songscount", GetArtistsSongsCountList).WithName("GetArtistsSongsCountList").WithSummary("Get Artists SongsCount List");
+            builder.MapGet("/artists/songscount", GetArtistsSongsCountList)
+                .WithName("GetArtistsSongsCountList").WithSummary("Get Artists SongsCount List");
 
-            builder.MapGet("/artists/{artistId:int}", GetArtistDetails).WithName("GetArtistDetails").WithSummary("Get Artist Details");
+            builder.MapGet("/artists/{artistId:int}", GetArtistDetails)
+                .WithName("GetArtistDetails").WithSummary("Get Artist Details")
+                .Produces<ArtistDetailsDto>().ProducesProblem(StatusCodes.Status404NotFound);
         }
 
         static async Task<Ok<List<GroupArtistListDto>>> GetArtistsList(ISender sender)
         {
             var artists = await sender.Send(new GetArtistsListQuery());
 
-            return TypedResults.Ok(artists);
+            return TypedResults.Ok(artists.Value);
         }
 
         static async Task<Ok<List<ArtistSongsCountListDto>>> GetArtistsSongsCountList(ISender sender)
         {
             var artists = await sender.Send(new GetArtistsSongsCountListQuery());
 
-            return TypedResults.Ok(artists);
+            return TypedResults.Ok(artists.Value);
         }
 
-        static async Task<Results<Ok<ArtistDetailsDto>, NotFound>> GetArtistDetails([AsParameters] GetArtistDetailsQuery artistDetailsQuery, ISender sender)
+        static async Task<IResult> GetArtistDetails([AsParameters] GetArtistDetailsQuery artistDetailsQuery, ISender sender)
         {
             var artist = await sender.Send(artistDetailsQuery);
 
-            return artist is null ? TypedResults.NotFound() : TypedResults.Ok(artist);
+            return artist.IsSuccess ? TypedResults.Ok(artist.Value) : artist.FailureToMinimalApi();
         }
     }
 }

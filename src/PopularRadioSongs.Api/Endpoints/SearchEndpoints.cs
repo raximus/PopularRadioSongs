@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using PopularRadioSongs.Application.UseCases.Search.GetSearchResults;
 
 namespace PopularRadioSongs.Api.Endpoints
@@ -8,23 +7,16 @@ namespace PopularRadioSongs.Api.Endpoints
     {
         public static void RegisterSearchEndpoints(this RouteGroupBuilder builder)
         {
-            builder.MapGet("/search", GetSearchResults).WithName("GetSearchResults").WithSummary("Get Search Results");
+            builder.MapGet("/search", GetSearchResults)
+                .WithName("GetSearchResults").WithSummary("Get Search Results")
+                .Produces<SearchResultsDto>().ProducesValidationProblem();
         }
 
-        static async Task<Results<Ok<SearchResultsDto>, ValidationProblem>> GetSearchResults([AsParameters] GetSearchResultsQuery searchResultsQuery, ISender sender)
+        static async Task<IResult> GetSearchResults([AsParameters] GetSearchResultsQuery searchResultsQuery, ISender sender)
         {
-            if (searchResultsQuery.SearchValue.Length < 3)
-            {
-                var validationProblem = new Dictionary<string, string[]>
-                    {
-                        { "SearchValue", new string[] { "Search Value must have at least 3 characters" } }
-                    };
-                return TypedResults.ValidationProblem(validationProblem);
-            }
-
             var searchResults = await sender.Send(searchResultsQuery);
 
-            return TypedResults.Ok(searchResults);
+            return searchResults.IsSuccess ? TypedResults.Ok(searchResults.Value) : searchResults.FailureToMinimalApi();
         }
     }
 }

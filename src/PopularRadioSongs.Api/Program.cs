@@ -20,6 +20,14 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance = context.HttpContext.Request.Path;
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +38,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 
 app.MapGet("/ping", (ILogger<Program> logger) =>
 {

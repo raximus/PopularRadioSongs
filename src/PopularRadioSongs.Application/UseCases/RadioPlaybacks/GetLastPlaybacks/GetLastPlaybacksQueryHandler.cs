@@ -2,10 +2,11 @@
 using MediatR;
 using PopularRadioSongs.Application.Contracts;
 using PopularRadioSongs.Application.Extensions;
+using PopularRadioSongs.Application.Results;
 
 namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
 {
-    public class GetLastPlaybacksQueryHandler : IRequestHandler<GetLastPlaybacksQuery, LastPlaybacksDto?>
+    public class GetLastPlaybacksQueryHandler : IRequestHandler<GetLastPlaybacksQuery, UseCaseResult<LastPlaybacksDto>>
     {
         private readonly IPlaybackRepository _playbackRepository;
         private readonly IMapper _mapper;
@@ -18,11 +19,11 @@ namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
             _radioNamesService = radioNamesService;
         }
 
-        public async Task<LastPlaybacksDto?> Handle(GetLastPlaybacksQuery request, CancellationToken cancellationToken)
+        public async Task<UseCaseResult<LastPlaybacksDto>> Handle(GetLastPlaybacksQuery request, CancellationToken cancellationToken)
         {
             if (!_radioNamesService.ConfirmRadioExist(request.RadioId))
             {
-                return null;
+                return UseCaseResult<LastPlaybacksDto>.NotFound("Radio not found");
             }
 
             var lastPlaybacks = await _playbackRepository.GetLastRadioPlaybacksAsync(request.RadioId);
@@ -33,7 +34,7 @@ namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
 
             var radioName = _radioNamesService.GetRadioName(request.RadioId);
 
-            return new LastPlaybacksDto(radioName, lastPlaybackGroups);
+            return UseCaseResult<LastPlaybacksDto>.Success(new LastPlaybacksDto(radioName, lastPlaybackGroups));
         }
     }
 }

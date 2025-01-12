@@ -22,7 +22,7 @@ namespace PopularRadioSongs.Mvc.Controllers
         {
             var searchResults = await _sender.Send(searchResultsQuery);
 
-            return View(searchResults);
+            return searchResults.IsSuccess ? View(searchResults.Value) : searchResults.FailureToActionResult();
         }
     }
 }

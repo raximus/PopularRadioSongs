@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using PopularRadioSongs.Application.Contracts;
+using PopularRadioSongs.Application.Results;
 
 namespace PopularRadioSongs.Application.UseCases.Songs.GetSongDetails
 {
-    public class GetSongDetailsQueryHandler : IRequestHandler<GetSongDetailsQuery, SongDetailsDto?>
+    public class GetSongDetailsQueryHandler : IRequestHandler<GetSongDetailsQuery, UseCaseResult<SongDetailsDto>>
     {
         private readonly ISongRepository _songRepository;
         private readonly IMapper _mapper;
@@ -17,13 +18,13 @@ namespace PopularRadioSongs.Application.UseCases.Songs.GetSongDetails
             _radioNamesService = radioNamesService;
         }
 
-        public async Task<SongDetailsDto?> Handle(GetSongDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<UseCaseResult<SongDetailsDto>> Handle(GetSongDetailsQuery request, CancellationToken cancellationToken)
         {
             var song = await _songRepository.GetSongWithArtistsAndPlaybacksByIdAsync(request.SongId);
 
             if (song is null)
             {
-                return null;
+                return UseCaseResult<SongDetailsDto>.NotFound("Song not found");
             }
 
             var songDto = _mapper.Map<SongDetailsDto>(song);
@@ -33,7 +34,7 @@ namespace PopularRadioSongs.Application.UseCases.Songs.GetSongDetails
                 playback.RadioName = _radioNamesService.GetRadioName(playback.RadioId);
             });
 
-            return songDto;
+            return UseCaseResult<SongDetailsDto>.Success(songDto);
         }
     }
 }

@@ -27,9 +27,9 @@ namespace PopularRadioSongs.Mvc.Controllers
                 return NotFound();
             }
 
-            await _sender.Send(importPlaybacksCommand);
+            var result = await _sender.Send(importPlaybacksCommand);
 
-            return View();
+            return result.IsSuccess ? View() : result.FailureToActionResult();
         }
     }
 }

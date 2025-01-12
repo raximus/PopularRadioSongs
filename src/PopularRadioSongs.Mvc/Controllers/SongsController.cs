@@ -19,14 +19,14 @@ namespace PopularRadioSongs.Mvc.Controllers
         {
             var songs = await _sender.Send(new GetSongsListQuery());
 
-            return View(songs);
+            return View(songs.Value);
         }
 
         public async Task<IActionResult> TitleCount()
         {
             var songs = await _sender.Send(new GetSongsTitleCountListQuery());
 
-            return View(songs);
+            return View(songs.Value);
         }
 
         [Route("Songs/{songId:int}")]
@@ -34,12 +34,7 @@ namespace PopularRadioSongs.Mvc.Controllers
         {
             var song = await _sender.Send(songDetailsQuery);
 
-            if (song is null)
-            {
-                return NotFound();
-            }
-
-            return View(song);
+            return song.IsSuccess ? View(song.Value) : song.FailureToActionResult();
         }
     }
 }
