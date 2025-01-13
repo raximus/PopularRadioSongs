@@ -13,10 +13,15 @@ namespace PopularRadioSongs.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Playback>> GetLastRadioPlaybacksAsync(int radioId)
+        public async Task<(List<Playback>, int)> GetLastRadioPlaybacksAsync(int radioId, int page, int pageSize)
         {
-            return await _dbContext.Playbacks.AsNoTracking().Include(p => p.Song).ThenInclude(s => s.Artists).Where(p => p.RadioId == radioId)
-                .OrderByDescending(p => p.PlayTime).ToListAsync();
+            var query = _dbContext.Playbacks.AsNoTracking().Include(p => p.Song).ThenInclude(s => s.Artists).Where(p => p.RadioId == radioId)
+                .OrderByDescending(p => p.PlayTime);
+
+            var playbacksCount = await query.CountAsync();
+            var playbacks = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return (playbacks, playbacksCount);
         }
     }
 }

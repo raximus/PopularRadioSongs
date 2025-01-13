@@ -1,17 +1,17 @@
-﻿@model PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks.LastPlaybacksDto
+﻿@model PagedViewModel<PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks.LastPlaybacksDto>
 
 @{
-    ViewData["Title"] = "Radio " + Model.RadioName;
+    ViewData["Title"] = "Radio " + Model.Value.RadioName;
 }
 
-<h1>Radio @Model.RadioName</h1>
+<h1>Radio @Model.Value.RadioName</h1>
 
 <div>
     <h4>Playbacks</h4>
 
     <table class="table">
         <tbody>
-            @foreach (var playbackGroup in Model.PlaybackGroups)
+            @foreach (var playbackGroup in Model.Value.PlaybackGroups)
             {
                 <tr>
                     <td>
@@ -44,4 +44,6 @@
             }
         </tbody>
     </table>
+
+    <partial name="_PaginationPartial" for="PagedData" />
 </div>

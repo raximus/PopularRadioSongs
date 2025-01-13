@@ -12,9 +12,11 @@ namespace PopularRadioSongs.Api.Endpoints
                 .Produces<LastPlaybacksDto>().ProducesProblem(StatusCodes.Status404NotFound);
         }
 
-        static async Task<IResult> GetLastPlaybacks([AsParameters] GetLastPlaybacksQuery lastPlaybacksQuery, ISender sender)
+        static async Task<IResult> GetLastPlaybacks([AsParameters] GetLastPlaybacksQuery lastPlaybacksQuery, ISender sender, HttpResponse response)
         {
             var lastPlaybacks = await sender.Send(lastPlaybacksQuery);
+
+            response.AddPaginationHeader(lastPlaybacks);
 
             return lastPlaybacks.IsSuccess ? TypedResults.Ok(lastPlaybacks.Value) : lastPlaybacks.FailureToMinimalApi();
         }

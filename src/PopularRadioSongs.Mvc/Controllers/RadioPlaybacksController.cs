@@ -18,7 +18,7 @@ namespace PopularRadioSongs.Mvc.Controllers
         {
             var lastPlaybacks = await _sender.Send(lastPlaybacksQuery);
 
-            return lastPlaybacks.IsSuccess ? View(lastPlaybacks.Value) : lastPlaybacks.FailureToActionResult();
+            return lastPlaybacks.IsSuccess ? View(lastPlaybacks.ToPagedViewModel()) : lastPlaybacks.FailureToActionResult();
         }
     }
 }

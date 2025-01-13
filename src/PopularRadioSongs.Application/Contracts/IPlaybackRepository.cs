@@ -4,6 +4,6 @@ namespace PopularRadioSongs.Application.Contracts
 {
     public interface IPlaybackRepository
     {
-        Task<List<Playback>> GetLastRadioPlaybacksAsync(int radioId);
+        Task<(List<Playback>, int)> GetLastRadioPlaybacksAsync(int radioId, int page, int pageSize);
     }
 }

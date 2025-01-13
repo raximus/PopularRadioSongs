@@ -15,18 +15,18 @@ namespace PopularRadioSongs.Mvc.Controllers
             _sender = sender;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(GetSongsListQuery songsListQuery)
         {
-            var songs = await _sender.Send(new GetSongsListQuery());
+            var songs = await _sender.Send(songsListQuery);
 
-            return View(songs.Value);
+            return View(songs.ToPagedViewModel());
         }
 
-        public async Task<IActionResult> TitleCount()
+        public async Task<IActionResult> TitleCount(GetSongsTitleCountListQuery songsTitleCountListQuery)
         {
-            var songs = await _sender.Send(new GetSongsTitleCountListQuery());
+            var songs = await _sender.Send(songsTitleCountListQuery);
 
-            return View(songs.Value);
+            return View(songs.ToPagedViewModel());
         }
 
         [Route("Songs/{songId:int}")]

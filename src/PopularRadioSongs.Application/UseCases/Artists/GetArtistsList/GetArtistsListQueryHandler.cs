@@ -5,7 +5,7 @@ using PopularRadioSongs.Application.Results;
 
 namespace PopularRadioSongs.Application.UseCases.Artists.GetArtistsList
 {
-    public class GetArtistsListQueryHandler : IRequestHandler<GetArtistsListQuery, UseCaseResult<List<GroupArtistListDto>>>
+    public class GetArtistsListQueryHandler : IRequestHandler<GetArtistsListQuery, PagedUseCaseResult<List<GroupArtistListDto>>>
     {
         private readonly IArtistRepository _artistRepository;
         private readonly IMapper _mapper;
@@ -16,13 +16,15 @@ namespace PopularRadioSongs.Application.UseCases.Artists.GetArtistsList
             _mapper = mapper;
         }
 
-        public async Task<UseCaseResult<List<GroupArtistListDto>>> Handle(GetArtistsListQuery request, CancellationToken cancellationToken)
+        public async Task<PagedUseCaseResult<List<GroupArtistListDto>>> Handle(GetArtistsListQuery request, CancellationToken cancellationToken)
         {
-            var artists = await _artistRepository.GetArtistsAsync();
+            (var artists, var artistsCount) = await _artistRepository.GetArtistsAsync(request.Page, request.PageSize);
 
             var artistsDto = _mapper.Map<List<ArtistListDto>>(artists);
 
-            return UseCaseResult<List<GroupArtistListDto>>.Success(artistsDto.GroupBy(a => NameToLetter(a.Name)).Select(g => new GroupArtistListDto(g.Key, g.ToList())).ToList());
+            var artistsGroup = artistsDto.GroupBy(a => NameToLetter(a.Name)).Select(g => new GroupArtistListDto(g.Key, g.ToList())).ToList();
+
+            return PagedUseCaseResult<List<GroupArtistListDto>>.Success(request.Page, request.PageSize, artistsCount, artistsGroup);
         }
 
         private static string NameToLetter(string name)

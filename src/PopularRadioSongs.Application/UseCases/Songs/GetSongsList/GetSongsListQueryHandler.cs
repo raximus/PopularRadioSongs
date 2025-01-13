@@ -5,7 +5,7 @@ using PopularRadioSongs.Application.Results;
 
 namespace PopularRadioSongs.Application.UseCases.Songs.GetSongsList
 {
-    public class GetSongsListQueryHandler : IRequestHandler<GetSongsListQuery, UseCaseResult<List<GroupSongListDto>>>
+    public class GetSongsListQueryHandler : IRequestHandler<GetSongsListQuery, PagedUseCaseResult<List<GroupSongListDto>>>
     {
         private readonly ISongRepository _songRepository;
         private readonly IMapper _mapper;
@@ -16,13 +16,15 @@ namespace PopularRadioSongs.Application.UseCases.Songs.GetSongsList
             _mapper = mapper;
         }
 
-        public async Task<UseCaseResult<List<GroupSongListDto>>> Handle(GetSongsListQuery request, CancellationToken cancellationToken)
+        public async Task<PagedUseCaseResult<List<GroupSongListDto>>> Handle(GetSongsListQuery request, CancellationToken cancellationToken)
         {
-            var songs = await _songRepository.GetSongsAsync();
+            (var songs, var songsCount) = await _songRepository.GetSongsAsync(request.Page, request.PageSize);
 
             var songsDto = _mapper.Map<List<SongListDto>>(songs);
 
-            return UseCaseResult<List<GroupSongListDto>>.Success(songsDto.GroupBy(a => TitleToLetter(a.Title)).Select(g => new GroupSongListDto(g.Key, g.ToList())).ToList());
+            var songsGroup = songsDto.GroupBy(a => TitleToLetter(a.Title)).Select(g => new GroupSongListDto(g.Key, g.ToList())).ToList();
+
+            return PagedUseCaseResult<List<GroupSongListDto>>.Success(request.Page, request.PageSize, songsCount, songsGroup);
         }
 
         private static string TitleToLetter(string title)

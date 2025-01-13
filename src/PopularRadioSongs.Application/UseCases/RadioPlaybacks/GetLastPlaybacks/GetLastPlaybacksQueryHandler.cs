@@ -6,7 +6,7 @@ using PopularRadioSongs.Application.Results;
 
 namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
 {
-    public class GetLastPlaybacksQueryHandler : IRequestHandler<GetLastPlaybacksQuery, UseCaseResult<LastPlaybacksDto>>
+    public class GetLastPlaybacksQueryHandler : IRequestHandler<GetLastPlaybacksQuery, PagedUseCaseResult<LastPlaybacksDto>>
     {
         private readonly IPlaybackRepository _playbackRepository;
         private readonly IMapper _mapper;
@@ -19,14 +19,14 @@ namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
             _radioNamesService = radioNamesService;
         }
 
-        public async Task<UseCaseResult<LastPlaybacksDto>> Handle(GetLastPlaybacksQuery request, CancellationToken cancellationToken)
+        public async Task<PagedUseCaseResult<LastPlaybacksDto>> Handle(GetLastPlaybacksQuery request, CancellationToken cancellationToken)
         {
             if (!_radioNamesService.ConfirmRadioExist(request.RadioId))
             {
-                return UseCaseResult<LastPlaybacksDto>.NotFound("Radio not found");
+                return PagedUseCaseResult<LastPlaybacksDto>.NotFound("Radio not found");
             }
 
-            var lastPlaybacks = await _playbackRepository.GetLastRadioPlaybacksAsync(request.RadioId);
+            (var lastPlaybacks, var lastPlaybacksCount) = await _playbackRepository.GetLastRadioPlaybacksAsync(request.RadioId, request.Page, request.PageSize);
 
             var lastPlaybacksDto = _mapper.Map<List<PlaybackLastPlaybacksDto>>(lastPlaybacks);
 
@@ -34,7 +34,7 @@ namespace PopularRadioSongs.Application.UseCases.RadioPlaybacks.GetLastPlaybacks
 
             var radioName = _radioNamesService.GetRadioName(request.RadioId);
 
-            return UseCaseResult<LastPlaybacksDto>.Success(new LastPlaybacksDto(radioName, lastPlaybackGroups));
+            return PagedUseCaseResult<LastPlaybacksDto>.Success(request.Page, request.PageSize, lastPlaybacksCount, new LastPlaybacksDto(radioName, lastPlaybackGroups));
         }
     }
 }

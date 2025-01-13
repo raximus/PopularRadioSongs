@@ -14,18 +14,28 @@ namespace PopularRadioSongs.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Song>> GetSongsAsync()
+        public async Task<(List<Song>, int)> GetSongsAsync(int page, int pageSize)
         {
-            return await _dbContext.Songs.AsNoTracking().Include(s => s.Artists).OrderBy(s => s.Title).ToListAsync();
+            var query = _dbContext.Songs.AsNoTracking().Include(s => s.Artists).OrderBy(s => s.Title);
+
+            var songsCount = await query.CountAsync();
+            var songs = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return (songs, songsCount);
         }
 
-        public async Task<List<SongTitleCountListDto>> GetSongTitleCountListAsync()
+        public async Task<(List<SongTitleCountListDto>, int)> GetSongTitleCountListAsync(int page, int pageSize)
         {
-            return await _dbContext.Songs.GroupBy(s => s.Lookup).Where(g => g.Count() > 1).OrderByDescending(g => g.Count())
+            var query = _dbContext.Songs.GroupBy(s => s.Lookup).Where(g => g.Count() > 1).OrderByDescending(g => g.Count());
+
+            var songsCount = await query.CountAsync();
+            var songs = await query.Skip((page - 1) * pageSize).Take(pageSize)
                 .Select(g => new SongTitleCountListDto(g.Key, g.Count(), g
                     .Select(s => new SongTitleCountDto(s.Id, s.Title, s.Artists
                         .Select(a => new ArtistSongTitleCountDto(a.Id, a.Name)).ToList())).ToList()))
                 .ToListAsync();
+
+            return (songs, songsCount);
         }
 
         public async Task<Song?> GetSongWithArtistsAndPlaybacksByIdAsync(int songId)

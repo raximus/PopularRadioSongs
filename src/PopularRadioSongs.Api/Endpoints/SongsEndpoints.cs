@@ -21,16 +21,20 @@ namespace PopularRadioSongs.Api.Endpoints
                 .Produces<SongDetailsDto>().ProducesProblem(StatusCodes.Status404NotFound);
         }
 
-        static async Task<Ok<List<GroupSongListDto>>> GetSongsList(ISender sender)
+        static async Task<Ok<List<GroupSongListDto>>> GetSongsList([AsParameters] GetSongsListQuery songsListQuery, ISender sender, HttpResponse response)
         {
-            var songs = await sender.Send(new GetSongsListQuery());
+            var songs = await sender.Send(songsListQuery);
+
+            response.AddPaginationHeader(songs);
 
             return TypedResults.Ok(songs.Value);
         }
 
-        static async Task<Ok<List<SongTitleCountListDto>>> GetSongsTitleCountList(ISender sender)
+        static async Task<Ok<List<SongTitleCountListDto>>> GetSongsTitleCountList([AsParameters] GetSongsTitleCountListQuery songsTitleCountListQuery, ISender sender, HttpResponse response)
         {
-            var songs = await sender.Send(new GetSongsTitleCountListQuery());
+            var songs = await sender.Send(songsTitleCountListQuery);
+
+            response.AddPaginationHeader(songs);
 
             return TypedResults.Ok(songs.Value);
         }

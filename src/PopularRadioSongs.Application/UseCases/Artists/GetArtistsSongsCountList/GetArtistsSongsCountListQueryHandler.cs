@@ -4,7 +4,7 @@ using PopularRadioSongs.Application.Results;
 
 namespace PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountList
 {
-    public class GetArtistsSongsCountListQueryHandler : IRequestHandler<GetArtistsSongsCountListQuery, UseCaseResult<List<ArtistSongsCountListDto>>>
+    public class GetArtistsSongsCountListQueryHandler : IRequestHandler<GetArtistsSongsCountListQuery, PagedUseCaseResult<List<ArtistSongsCountListDto>>>
     {
         private readonly IArtistRepository _artistRepository;
 
@@ -13,11 +13,11 @@ namespace PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountLis
             _artistRepository = artistRepository;
         }
 
-        public async Task<UseCaseResult<List<ArtistSongsCountListDto>>> Handle(GetArtistsSongsCountListQuery request, CancellationToken cancellationToken)
+        public async Task<PagedUseCaseResult<List<ArtistSongsCountListDto>>> Handle(GetArtistsSongsCountListQuery request, CancellationToken cancellationToken)
         {
-            var artists = await _artistRepository.GetArtistSongsCountListAsync();
+            (var artists, var artistsCount) = await _artistRepository.GetArtistSongsCountListAsync(request.Page, request.PageSize);
 
-            return UseCaseResult<List<ArtistSongsCountListDto>>.Success(artists);
+            return PagedUseCaseResult<List<ArtistSongsCountListDto>>.Success(request.Page, request.PageSize, artistsCount, artists);
         }
     }
 }

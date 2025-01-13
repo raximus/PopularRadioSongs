@@ -4,7 +4,7 @@ using PopularRadioSongs.Application.Results;
 
 namespace PopularRadioSongs.Application.UseCases.Songs.GetSongsTitleCountList
 {
-    public class GetSongsTitleCountListQueryHandler : IRequestHandler<GetSongsTitleCountListQuery, UseCaseResult<List<SongTitleCountListDto>>>
+    public class GetSongsTitleCountListQueryHandler : IRequestHandler<GetSongsTitleCountListQuery, PagedUseCaseResult<List<SongTitleCountListDto>>>
     {
         private readonly ISongRepository _songRepository;
 
@@ -13,11 +13,11 @@ namespace PopularRadioSongs.Application.UseCases.Songs.GetSongsTitleCountList
             _songRepository = songRepository;
         }
 
-        public async Task<UseCaseResult<List<SongTitleCountListDto>>> Handle(GetSongsTitleCountListQuery request, CancellationToken cancellationToken)
+        public async Task<PagedUseCaseResult<List<SongTitleCountListDto>>> Handle(GetSongsTitleCountListQuery request, CancellationToken cancellationToken)
         {
-            var songs = await _songRepository.GetSongTitleCountListAsync();
+            (var songs, var songsCount) = await _songRepository.GetSongTitleCountListAsync(request.Page, request.PageSize);
 
-            return UseCaseResult<List<SongTitleCountListDto>>.Success(songs);
+            return PagedUseCaseResult<List<SongTitleCountListDto>>.Success(request.Page, request.PageSize, songsCount, songs);
         }
     }
 }

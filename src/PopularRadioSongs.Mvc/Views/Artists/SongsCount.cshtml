@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountList.ArtistSongsCountListDto>
+﻿@model PagedViewModel<List<PopularRadioSongs.Application.UseCases.Artists.GetArtistsSongsCountList.ArtistSongsCountListDto>>
 
 @{
     ViewData["Title"] = "Artists by Songs Count";
@@ -8,7 +8,7 @@
 
 <table class="table">
     <tbody>
-        @foreach (var artist in Model)
+        @foreach (var artist in Model.Value)
         {
             <tr>
                 <td>
@@ -21,3 +21,5 @@
         }
     </tbody>
 </table>
+
+<partial name="_PaginationPartial" for="PagedData" />
