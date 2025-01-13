@@ -19,6 +19,9 @@ Technologies used in this project:
 - Entity Framework Core
 - MS SQL Server
 - MediatR
+- FluentValidation
+- AutoMapper
+- Serilog
 - Hangfire (background tasks)
 
 The approaches used to create code:
@@ -29,4 +32,10 @@ The approaches used to create code:
 - Result pattern
 
 # Usage
-Run project in VS2022. Choose a startup project(Mvc or Api). Use the migration mechanism to build a database containing a small sample dataset. In the Development environment, you can use manual data import by selecting the appropriate buttons on the main screen, importing data for the last full hour, or the last 24 hours. Additionally, once an hour, a background task will automatically import data for the last full hour. By default background task is started only for Mvc, if you want, uncomment app.StartBackgroundTasks() in Program.cs file in Api part of the app.
+Run project in VS2022. Choose a startup project(Mvc or Api).
+
+Use the migration mechanism to build a database containing a small sample dataset.
+
+In the Development environment, you can use manual data import by selecting the appropriate buttons on the main screen, importing data for the last full hour, or the last 24 hours.
+
+Additionally, once an hour, a background task will automatically import data for the last full hour. By default background task is started only for Mvc, if you want, uncomment app.StartBackgroundTasks() in Program.cs file in Api part of the app.
