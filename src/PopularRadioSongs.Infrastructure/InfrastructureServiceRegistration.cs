@@ -13,7 +13,7 @@ namespace PopularRadioSongs.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddHangfire(configuration => configuration.UseInMemoryStorage()
-                .UseFilter(new AutomaticRetryAttribute() { Attempts = 3, DelaysInSeconds = [600] }));
+                .UseFilter(new AutomaticRetryAttribute() { Attempts = 3, DelaysInSeconds = [300] }));
 
             services.AddHangfireServer();
 
